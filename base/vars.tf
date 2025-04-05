@@ -45,3 +45,7 @@ variable "rdsDbVideosUserName" {
 variable "rdsDbVideosPassword" {
   type = string
 }
+
+variable "ecrApiVideosName" {
+  default = "api-videos-ecr"
+}
