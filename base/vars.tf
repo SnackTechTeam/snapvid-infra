@@ -34,6 +34,10 @@ variable "sqsVideoStatusQueueName" {
   default = "sqs-video-status"
 }
 
+variable "sqsVideoProcessQueueName" {
+  default = "sqs-video-process"
+}
+
 variable "rdsVideosDbName" {
   default = "dbVideos"
 }

@@ -53,6 +53,7 @@ jobs:
           -var="projectName=${{ vars.PROJECT_NAME }}" \
           -var="s3BucketVideosName=${{vars.VIDEOS_BUCKET_NAME}}" \
           -var="sqsVideoStatusQueueName=${{vars.VIDEOS_STATUS_SQS_NAME}}" \
+          -var="sqsVideoProcessQueueName=${{vars.VIDEOS_PROCESS_SQS_NAME}}" \
           -var="rdsVideosDbName=${{vars.VIDEOS_DB_NAME}}" \
           -var="rdsDbVideosUserName=${{secrets.VIDEOS_DB_USERNAME}}" \
           -var="rdsDbVideosPassword=${{secrets.VIDEOS_DB_PASSWORD}}" \
