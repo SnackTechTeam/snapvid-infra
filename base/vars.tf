@@ -39,15 +39,15 @@ variable "sqsVideoProcessQueueName" {
 }
 
 variable "rdsVideosDbName" {
-  default = "dbVideos"
+  default = "dbvideos"
 }
 
 variable "rdsDbVideosUserName" {
-  type = string
+  default = "value"
 }
 
 variable "rdsDbVideosPassword" {
-  type = string
+  default = "value"
 }
 
 variable "ecrApiVideosName" {
