@@ -12,7 +12,7 @@ Este tutorial mostra o passo a passo para criar um cluster Kubernetes na AWS e c
 Inicie o Terraform no diretório do projeto para baixar os provedores e configurar o backend remoto. O parametro "bucket" do comando abaixo deve ser substituido pelo nome de um bucket previamente criado no S3 da sua conta.
 
 ```bash
-terraform init -backend-config="bucket=snapvid-tfstate" -backend-config="key=microsservices/terraform.tfstate" -backend-config="region=us-east-1"
+terraform init -backend-config="bucket=snapvid-tfstates" -backend-config="key=microsservices/terraform.tfstate" -backend-config="region=us-east-1"
 
 ```
 
