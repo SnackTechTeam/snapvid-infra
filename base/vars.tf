@@ -33,3 +33,15 @@ variable "s3BucketVideosName" {
 variable "sqsVideoStatusQueueName" {
   default = "sqs-video-status"
 }
+
+variable "rdsVideosDbName" {
+  default = "dbVideos"
+}
+
+variable "rdsDbVideosUserName" {
+  type = string
+}
+
+variable "rdsDbVideosPassword" {
+  type = string
+}

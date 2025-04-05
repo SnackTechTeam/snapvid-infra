@@ -34,7 +34,11 @@ jobs:
 
     # 4. Inicializar o Terraform
     - name: Terraform Init
-      run: terraform init -backend-config="bucket=${{ vars.BACKEND_BUCKET_NAME }}" -backend-config="key=microsservices/terraform.tfstate" -backend-config="region=${{ vars.AWS_REGION }}"
+      run: |
+        terraform init \
+          -backend-config="bucket=${{ vars.BACKEND_BUCKET_NAME }}" \
+          -backend-config="key=microsservices/terraform.tfstate" \
+          -backend-config="region=${{ vars.AWS_REGION }}"
 
     # 5. Validar o Terraform
     - name: Terraform Validate
@@ -42,7 +46,16 @@ jobs:
 
     # 6. Gerar o plano do Terraform
     - name: Terraform Plan
-      run: terraform plan -out=tfplan -var="regionDefault=${{ vars.AWS_REGION }}" -var="accountIdVoclabs=${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}" -var="projectName=${{ vars.PROJECT_NAME }}"  -var="s3BucketVideosName=${{vars.VIDEOS_BUCKET_NAME}}" -var="sqsVideoStatusQueueName=${{vars.VIDEOS_STATUS_SQS_NAME}}"
+      run: | 
+        terraform plan -out=tfplan \
+          -var="regionDefault=${{ vars.AWS_REGION }}" \
+          -var="accountIdVoclabs=${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}" \
+          -var="projectName=${{ vars.PROJECT_NAME }}" \
+          -var="s3BucketVideosName=${{vars.VIDEOS_BUCKET_NAME}}" \
+          -var="sqsVideoStatusQueueName=${{vars.VIDEOS_STATUS_SQS_NAME}}" \
+          -var="rdsVideosDbName=${{vars.VIDEOS_DB_NAME}}" \
+          -var="rdsDbVideosUserName="${{secrets.VIDEOS_DB_USERNAME}}" \
+          -var="rdsDbVideosPassword="${{secrets.VIDEOS_DB_PASSWORD}}" \
 
     # 7. Aplicar o plano do Terraform
     - name: Terraform Apply
