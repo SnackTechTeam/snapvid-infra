@@ -25,3 +25,11 @@ variable "policyArn" {
 variable "accessConfig" {
   default = "API_AND_CONFIG_MAP"
 }
+
+variable "s3BucketVideosName" {
+  default = "vidsnap-videos"
+}
+
+variable "sqsVideoStatusQueueName" {
+  default = "sqs-video-status"
+}

@@ -42,7 +42,7 @@ jobs:
 
     # 6. Gerar o plano do Terraform
     - name: Terraform Plan
-      run: terraform plan -out=tfplan -var="regionDefault=${{ vars.AWS_REGION }}" -var="accountIdVoclabs=${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}" -var="projectName=${{ vars.PROJECT_NAME }}"  
+      run: terraform plan -out=tfplan -var="regionDefault=${{ vars.AWS_REGION }}" -var="accountIdVoclabs=${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}" -var="projectName=${{ vars.PROJECT_NAME }}"  -var="s3BucketVideosName=${{vars.VIDEOS_BUCKET_NAME}}" -var="sqsVideoStatusQueueName=${{vars.VIDEOS_STATUS_SQS_NAME}}"
 
     # 7. Aplicar o plano do Terraform
     - name: Terraform Apply
