@@ -54,8 +54,8 @@ jobs:
           -var="s3BucketVideosName=${{vars.VIDEOS_BUCKET_NAME}}" \
           -var="sqsVideoStatusQueueName=${{vars.VIDEOS_STATUS_SQS_NAME}}" \
           -var="rdsVideosDbName=${{vars.VIDEOS_DB_NAME}}" \
-          -var="rdsDbVideosUserName="${{secrets.VIDEOS_DB_USERNAME}}" \
-          -var="rdsDbVideosPassword="${{secrets.VIDEOS_DB_PASSWORD}}" 
+          -var="rdsDbVideosUserName=${{secrets.VIDEOS_DB_USERNAME}}" \
+          -var="rdsDbVideosPassword=${{secrets.VIDEOS_DB_PASSWORD}}" 
 
     # 7. Aplicar o plano do Terraform
     - name: Terraform Apply
