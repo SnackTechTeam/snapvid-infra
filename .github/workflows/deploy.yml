@@ -8,7 +8,6 @@ on:
 jobs:
   deploy-base:
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./base
@@ -50,8 +49,8 @@ jobs:
       run: terraform apply -auto-approve tfplan
 
   deploy-k8s-metrics:
+    needs: deploy-base
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./k8s
