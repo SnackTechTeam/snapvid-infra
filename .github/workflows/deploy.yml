@@ -48,24 +48,16 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
 
-  deploy-k8s-metrics:
-    needs: deploy-base
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./k8s
+    # 8. Configurar o Kubectl
+    - name: Install Kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+    - name: Configure Kubectl
+      run: |
+        aws eks --region ${{ vars.AWS_REGION }} update-kubeconfig --name ${{ vars.PROJECT_NAME }}
 
-    steps:
-      # 1. Configurar o Kubectl
-      - name: Install Kubectl
-        run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          sudo mv kubectl /usr/local/bin/
-      - name: Configure Kubectl
-        run: |
-          aws eks --region ${{ vars.AWS_REGION }} update-kubeconfig --name ${{ vars.PROJECT_NAME }}
-
-      # 2. Implantar servidor de metricas para o cluster
-      - name: Deploy Metrics Server
-        run: kubectl apply -f metrics-server.yaml
+    # 9. Implantar servidor de metricas para o cluster
+    - name: Deploy Metrics Server
+      run: kubectl apply -f ../k8s/metrics-server.yaml
