@@ -1,5 +1,5 @@
 resource "aws_security_group" "rds_sg" {
-  name        = "SG-${var.projectName}"
+  name        = "SG-${var.projectName}-rds"
   description = "Este grupo e usado no snap-vid"
   vpc_id      = data.aws_vpc.vpc.id
 
