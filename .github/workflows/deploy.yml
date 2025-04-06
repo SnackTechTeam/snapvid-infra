@@ -68,8 +68,8 @@ jobs:
     - name: Terraform Output DB Instance
       id: terraform-output
       run: |
-        DB_VIDEOS_INSTANCE=$(terraform output rds_videos_instance_address)
-        echo "::set-output name=DB_VIDEOS_INSTANCE::$DB_VIDEOS_INSTANCE"
+        DB_VIDEOS_INSTANCE=$(terraform output -raw rds_videos_instance_address)
+        echo "DB_VIDEOS_INSTANCE=$DB_VIDEOS_INSTANCE" >> $GITHUB_OUTPUT
         
 
     # 8. Configurar o Kubectl
