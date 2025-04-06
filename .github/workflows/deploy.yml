@@ -68,7 +68,7 @@ jobs:
     - name: Terraform Output DB Instance
       id: terraform-output
       run: |
-        DB_VIDEOS_INSTANCE=$(terraform output -raw rds_videos_instance_address 2>/dev/null)
+        DB_VIDEOS_INSTANCE=$(terraform output rds_videos_instance_address | grep -v "::debug::" | tr -d '\r\n')
         if [ -z "$DB_VIDEOS_INSTANCE" ]; then
           echo "Error: Failed to get DB_VIDEOS_INSTANCE address from Terraform output."
           exit 1
