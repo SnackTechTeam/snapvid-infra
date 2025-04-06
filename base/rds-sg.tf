@@ -1,10 +1,21 @@
-resource "aws_db_subnet_group" "snapvid_db_subnet_group" {
-  name        = "${var.projectName}-db-subnet-group"
-  description = "Subnet group for RDS instances"
+resource "aws_security_group" "rds_sg" {
+  name        = "SG-${var.projectName}"
+  description = "Este grupo e usado no snap-vid"
+  vpc_id      = data.aws_vpc.vpc.id
 
-  subnet_ids = [for subnet in data.aws_subnet.subnet : subnet.id if subnet.availability_zone != "${var.regionDefault}e"]
+  ingress {
+    description = "VPC_ACCESS_SQLSERVER"
+    from_port   = 1433
+    to_port     = 1433
+    protocol    = "tcp"
+    cidr_blocks = [var.vpcCidr]
+  }
 
-  tags = {
-    Name = "${var.projectName}-db-subnet-group"
+  egress {
+    description = "All"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
