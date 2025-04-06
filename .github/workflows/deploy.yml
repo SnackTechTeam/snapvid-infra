@@ -64,23 +64,14 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
     
-    # 7.1 Captura Output Terraform
+    # 7.1 Output the DB Instance from terraform
     - name: Terraform Output DB Instance
       id: terraform-output
       run: |
-        OUTPUT=$(terraform output -json rds_videos_instance_address)
-        if [ -z "$OUTPUT" ]; then
-          echo "Warning: No output found for rds_videos_instance_address. Skipping DB_VIDEOS_INSTANCE setup."
-          echo "DB_VIDEOS_INSTANCE=" >> $GITHUB_OUTPUT
-          exit 0
-        fi
-        DB_VIDEOS_INSTANCE=$(echo "$OUTPUT" | jq -r '.value')
-        if [ -z "$DB_VIDEOS_INSTANCE" ]; then
-          echo "Error: Failed to get DB_VIDEOS_INSTANCE address from Terraform output."
-          exit 1
-        fi
+        DB_VIDEOS_INSTANCE=$(terraform output rds_videos_instance_address)
         echo "DB_VIDEOS_INSTANCE=$DB_VIDEOS_INSTANCE" >> $GITHUB_OUTPUT
-    
+        echo "DB_VIDEOS_INSTANCE: $DB_VIDEOS_INSTANCE"
+
     # 8. Configurar o Kubectl
     - name: Install Kubectl
       run: |
