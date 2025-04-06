@@ -76,3 +76,63 @@ jobs:
     # 9. Implantar servidor de metricas para o cluster
     - name: Deploy Metrics Server
       run: kubectl apply -f ../k8s/metrics-server.yaml
+    
+    # 10. Criar secret compartilhado com as credencias de acesso ao banco de videos
+    - name: Create/Update DB Connection Secret
+      env:
+        DB_INSTANCE: ${{ secrets.VIDEOS_DB_INSTANCE }}
+        DB_PASSWORD: ${{ secrets.VIDEOS_DB_PASSWORD }}
+        DB_UID: ${{ secrets.VIDEOS_DB_USERNAME }}
+        DB_NAME: ${{ vars.VIDEOS_DB_NAME }}
+        DB_PORT: 1433
+      run: |
+        SECRET_NAME="videos-db-connection-secret"
+        CONNECTION_STRING="Server=${{ env.DB_INSTANCE }},${{ env.DB_PORT }};Database=${{ env.DB_NAME }};User=${{ env.DB_UID }};Password=${{ env.DB_PASSWORD }};TrustServerCertificate=True"
+    
+        if kubectl get secret "$SECRET_NAME" > /dev/null 2>&1; then
+          kubectl delete secret "$SECRET_NAME" 
+        fi
+    
+        kubectl create secret generic "$SECRET_NAME"  \
+          --from-literal=connection-string="$CONNECTION_STRING"
+    
+    # 11. Criar secret compartilhado com os dados de acesso as credenciais da AWS 
+    - name: Create/Update AWS Secret
+      env:
+        ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        TOKEN: ${{ secrets.AWS_SECRET_ACCESS_TOKEN }}
+        REGION: ${{ vars.AWS_REGION }}
+      run: |
+        SECRET_NAME="aws-credential-secret"
+    
+        if kubectl get secret "$SECRET_NAME" > /dev/null 2>&1; then
+          kubectl delete secret "$SECRET_NAME" 
+        fi
+    
+        kubectl create secret generic "$SECRET_NAME"  \
+          --from-literal=access-key="${{ env.ACCESS_KEY }}" \
+          --from-literal=secret-key="${{ env.SECRET_KEY }}" \
+          --from-literal=session-token="${{ env.TOKEN }}" \
+          --from-literal=region="${{ env.REGION }}" 
+    
+    # 12. Criar configmap compartilhado com os dados de acesso as filas sqs
+    - name: Create/Update ConfigMap SQS
+      env:
+        AWS_REGION: ${{ vars.AWS_REGION }}
+        ID_VOCLABS: ${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}
+        SQS_PROCESS_NAME: ${{ vars.VIDEOS_PROCESS_SQS_NAME }}
+        SQS_STATUS_NAME: ${{ vars.VIDEOS_STATUS_SQS_NAME }}
+      run: |
+        CONFIGMAP_NAME="sqs-queues-configmap"
+    
+        if kubectl get configmap "$CONFIGMAP_NAME"  > /dev/null 2>&1; then
+          kubectl delete configmap "$CONFIGMAP_NAME" 
+        fi
+    
+        kubectl create configmap "$CONFIGMAP_NAME" \
+          --from-literal=videos-process-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_PROCESS_NAME }}" \
+          --from-literal=videos-process-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_PROCESS_NAME }}-dlq" \
+          --from-literal=videos-status-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}" \
+          --from-literal=videos-status-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}-dlq" 
+    
