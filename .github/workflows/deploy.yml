@@ -68,7 +68,7 @@ jobs:
     - name: Terraform Output DB Instance
       id: terraform-output
       run: |
-        DB_INSTANCE=$(terraform output -raw rds_videos_instance_address | tr -d '%')
+        DB_INSTANCE=$(terraform output -raw rds_videos_instance_address | sed 's/\n$//')
         echo "DB_VIDEOS_INSTANCE=$DB_INSTANCE" >> $GITHUB_OUTPUT
         
 
