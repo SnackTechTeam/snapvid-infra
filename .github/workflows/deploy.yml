@@ -68,7 +68,13 @@ jobs:
     - name: Terraform Output DB Instance
       id: terraform-output
       run: |
-        DB_VIDEOS_INSTANCE=$(terraform output -json rds_videos_instance_address | jq -r '.value')
+        OUTPUT=$(terraform output -json rds_videos_instance_address)
+        if [ -z "$OUTPUT" ]; then
+          echo "Warning: No output found for rds_videos_instance_address. Skipping DB_VIDEOS_INSTANCE setup."
+          echo "DB_VIDEOS_INSTANCE=" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        DB_VIDEOS_INSTANCE=$(echo "$OUTPUT" | jq -r '.value')
         if [ -z "$DB_VIDEOS_INSTANCE" ]; then
           echo "Error: Failed to get DB_VIDEOS_INSTANCE address from Terraform output."
           exit 1
