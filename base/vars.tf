@@ -53,3 +53,7 @@ variable "rdsDbVideosPassword" {
 variable "ecrApiVideosName" {
   default = "api-videos-ecr"
 }
+
+variable "ecrWorkerVideosStatusName" {
+  default = "worker-videos-status-ecr"
+}

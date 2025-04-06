@@ -57,7 +57,8 @@ jobs:
           -var="rdsVideosDbName=${{vars.VIDEOS_DB_NAME}}" \
           -var="rdsDbVideosUserName=${{secrets.VIDEOS_DB_USERNAME}}" \
           -var="rdsDbVideosPassword=${{secrets.VIDEOS_DB_PASSWORD}}" \
-          -var="ecrApiVideosName=${{vars.VIDEOS_API_ECR_NAME}}"
+          -var="ecrApiVideosName=${{vars.VIDEOS_API_ECR_NAME}}" \
+          -var="ecrWorkerVideosStatusName=${{vars.VIDEOS_WORKER_STATUS_ECR_NAME}}"
 
     # 7. Aplicar o plano do Terraform
     - name: Terraform Apply
