@@ -64,6 +64,15 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
 
+    # 7.1 Output the DB Instance from terraform
+    - name: Terraform Output DB Instance
+      id: terraform-output
+      run: |
+        unset TF_LOG  # or ensure debug logging is off
+        echo "DB_VIDEOS_INSTANCE<<EOF" >> $GITHUB_OUTPUT
+        terraform output -raw rds_videos_instance_address >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
     # 8. Configurar o Kubectl
     - name: Install Kubectl
       run: |
@@ -81,14 +90,13 @@ jobs:
     # 10. Criar secret compartilhado com as credencias de acesso ao banco de videos
     - name: Create/Update DB Connection Secret
       env:
-        DB_INSTANCE: ${{ secrets.VIDEOS_DB_INSTANCE }}
         DB_PASSWORD: ${{ secrets.VIDEOS_DB_PASSWORD }}
         DB_UID: ${{ secrets.VIDEOS_DB_USERNAME }}
         DB_NAME: ${{ vars.VIDEOS_DB_NAME }}
         DB_PORT: 1433
       run: |
         SECRET_NAME="videos-db-connection-secret"
-        CONNECTION_STRING="Server=${{ env.DB_INSTANCE }},${{ env.DB_PORT }};Database=${{ env.DB_NAME }};User=${{ env.DB_UID }};Password=${{ env.DB_PASSWORD }};TrustServerCertificate=True"
+        CONNECTION_STRING="Server=${{ steps.terraform-output.outputs.DB_VIDEOS_INSTANCE }},${{ env.DB_PORT }};Database=${{ env.DB_NAME }};User=${{ env.DB_UID }};Password=${{ env.DB_PASSWORD }};TrustServerCertificate=True"
     
         if kubectl get secret "$SECRET_NAME" > /dev/null 2>&1; then
           kubectl delete secret "$SECRET_NAME" 
