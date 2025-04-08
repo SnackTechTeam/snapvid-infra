@@ -53,7 +53,7 @@ jobs:
           -var="projectName=${{ vars.PROJECT_NAME }}" \
           -var="s3BucketVideosName=${{vars.VIDEOS_BUCKET_NAME}}" \
           -var="sqsVideoStatusQueueName=${{vars.VIDEOS_STATUS_SQS_NAME}}" \
-          -var="sqsVideoProcessQueueName=${{vars.VIDEOS_PROCESS_SQS_NAME}}" \
+          -var="sqsNovoVideoQueueName=${{vars.VIDEOS_PROCESS_SQS_NAME}}" \
           -var="rdsVideosDbName=${{vars.VIDEOS_DB_NAME}}" \
           -var="rdsDbVideosUserName=${{secrets.VIDEOS_DB_USERNAME}}" \
           -var="rdsDbVideosPassword=${{secrets.VIDEOS_DB_PASSWORD}}" \
@@ -69,9 +69,8 @@ jobs:
       id: terraform-output
       run: |
         unset TF_LOG  # or ensure debug logging is off
-        echo "DB_VIDEOS_INSTANCE<<EOF" >> $GITHUB_OUTPUT
-        terraform output -raw rds_videos_instance_address >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        DB_ADDRESS=$(terraform output -raw rds_videos_instance_address)
+        echo "DB_VIDEOS_INSTANCE=$DB_ADDRESS" >> $GITHUB_OUTPUT
 
     # 8. Configurar o Kubectl
     - name: Install Kubectl
