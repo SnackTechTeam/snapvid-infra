@@ -28,9 +28,7 @@ jobs:
 
     # 3. Configurar o Terraform CLI
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.5.7 # Ajuste para a versão do Terraform utilizada
+      uses: hashicorp/setup-terraform@v3
 
     # 4. Inicializar o Terraform
     - name: Terraform Init
@@ -69,8 +67,9 @@ jobs:
       id: terraform-output
       run: |
         unset TF_LOG  # or ensure debug logging is off
-        DB_ADDRESS=$(terraform output -raw rds_videos_instance_address | cut -d':' -f1)
-        echo "::set-output name=DB_VIDEOS_INSTANCE::$DB_ADDRESS"
+        DB_INSTANCE=$(terraform output -raw rds_videos_instance_address)
+        echo "DB_VIDEOS_INSTANCE=$DB_INSTANCE" >> $GITHUB_OUTPUT
+
 
     # 8. Configurar o Kubectl
     - name: Install Kubectl
