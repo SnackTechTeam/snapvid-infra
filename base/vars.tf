@@ -34,7 +34,7 @@ variable "sqsVideoStatusQueueName" {
   default = "sqs-video-status"
 }
 
-variable "sqsNovoVideoQueueName" {
+variable "sqsVideoProcessQueueName" {
   default = "sqs-video-novo"
 }
 
