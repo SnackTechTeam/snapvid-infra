@@ -57,3 +57,7 @@ variable "ecrApiVideosName" {
 variable "ecrWorkerVideosStatusName" {
   default = "worker-videos-status-ecr"
 }
+
+variable "ecrWorkerVideosProcessName" {
+  default = "worker-videos-process-ecr"
+}
