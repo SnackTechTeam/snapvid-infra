@@ -1,6 +1,6 @@
 resource "aws_sqs_queue" "sqs_atualiza_status" {
   name                       = var.sqsVideoStatusQueueName
-  delay_seconds              = 0
+  delay_seconds              = 1
   visibility_timeout_seconds = 30
   message_retention_seconds  = 345600 # 4 dias
   redrive_policy = jsonencode({
