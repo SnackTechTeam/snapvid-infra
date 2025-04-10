@@ -16,7 +16,8 @@ resource "aws_sqs_queue" "sqs_atualiza_status" {
 }
 
 resource "aws_sqs_queue" "sqs_atualiza_status_dlq" {
-  name                       = "${var.sqsVideoStatusQueueName}-dlq"
+  name                       = "${var.sqsVideoStatusQueueName}-dlq.fifo"
+  fifo_queue                 = true  
   visibility_timeout_seconds = 30
   message_retention_seconds  = 1209600 # 14 days
   tags = {
