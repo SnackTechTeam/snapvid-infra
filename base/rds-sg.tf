@@ -11,14 +11,6 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = [var.vpcCidr]
   }
 
-  ingress {
-    description = "ALL_ACCESS_SQLSERVER"
-    from_port   = 1433
-    to_port     = 1433
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     description = "All"
     from_port   = 0
