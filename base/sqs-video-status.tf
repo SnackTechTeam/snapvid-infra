@@ -1,6 +1,6 @@
 resource "aws_sqs_queue" "sqs_atualiza_status" {
-  name                       = var.sqsVideoStatusQueueName
-  fifo_queue                 = true                                 # Enable FIFO
+  name                       = "${var.sqsVideoStatusQueueName}.fifo"
+  fifo_queue                 = true                                 
   content_based_deduplication = true  
   delay_seconds              = 1
   visibility_timeout_seconds = 30
