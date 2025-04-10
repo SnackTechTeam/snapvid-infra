@@ -8,7 +8,7 @@ resource "kubernetes_service" "LoadBalancer" {
   }
   spec {
     selector = {
-      nome = "api-videos-pod"
+      app = "api-videos-pod"
     }
     port {
       port = 8080
