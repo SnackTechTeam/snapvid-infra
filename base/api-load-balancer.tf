@@ -11,8 +11,9 @@ resource "kubernetes_service" "LoadBalancer" {
       nome = "api-videos-pod"
     }
     port {
-      port = 80
-      target_port = 80
+      port = 8080
+      target_port = 8080
+      protocol = "TCP"
     }
     type = "LoadBalancer"
   }
