@@ -9,7 +9,7 @@ resource "aws_db_instance" "snacktech_db_pedidos" {
   password                  = sensitive(var.rdsDbVideosPassword)
   db_subnet_group_name      = aws_db_subnet_group.snapvid_db_subnet_group.name
   vpc_security_group_ids    = [aws_security_group.rds_sg.id]
-  publicly_accessible       = true
+  publicly_accessible       = false
   backup_retention_period   = 1             # Number of days to retain automated backups
   backup_window             = "03:00-04:00" # Preferred UTC backup window (hh24:mi-hh24:mi format)
   final_snapshot_identifier = "db-snap"
