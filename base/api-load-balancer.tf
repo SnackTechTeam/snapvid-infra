@@ -1,5 +1,5 @@
 resource "kubernetes_service" "LoadBalancer" {
-  depends_on = [ aws_eks_cluster.cluster, aws_eks_node_group.node-group, aws_eks_access_entry.access-entry, aws_eks_access_policy.eks-policy, aws_security_group.sg, aws_eks_cluster_auth.default ]
+  depends_on = [ aws_eks_cluster.cluster, aws_eks_node_group.node-group, aws_eks_access_entry.access-entry, aws_eks_access_policy_association.eks-policy, aws_security_group.sg, data.aws_eks_cluster_auth.default ]
   metadata {
     name = "load-balancer-api-videos"
     annotations = {
