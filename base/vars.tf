@@ -63,7 +63,7 @@ variable "ecrWorkerVideosProcessName" {
 }
 
 variable "cognito_callback_url" {
-  default = "https://auth-vidsnap-domain-example.com/callback"
+  default = "https://auth-vidsnap-domain.com/callback"
 }
 
 variable "cognito_domain_name" {
