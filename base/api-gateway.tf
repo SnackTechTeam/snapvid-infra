@@ -70,7 +70,11 @@ resource "aws_api_gateway_integration" "proxy" {
 
   request_parameters = {
     "integration.request.path.proxy"           = "method.request.path.proxy"
-    "integration.request.header.Accept"        = "'application/json'"
+    # Mapeia o userId do contexto do autorizador para um header X-User-Id
+    "integration.request.header.X-User-Id" = "context.authorizer.userId"
+    # Mapeia o email do contexto do autorizador para um header X-User-Email
+    "integration.request.header.X-User-Email" = "context.authorizer.email"
+    "integration.request.header.Accept"        = "method.request.header.Accept"
     "integration.request.header.Authorization" = "method.request.header.Authorization"
   }
 
