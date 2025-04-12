@@ -14,7 +14,7 @@ let verifier;
 if (COGNITO_USERPOOL_ID && COGNITO_REGION && COGNITO_APP_CLIENT_ID) {
     verifier = CognitoJwtVerifier.create({
         userPoolId: COGNITO_USERPOOL_ID,
-        tokenUse: "access", // Ou "id" dependendo do token que você espera (Access Token é comum para APIs)
+        tokenUse: "id", // Ou "id" dependendo do token que você espera (Access Token é comum para APIs)
         clientId: COGNITO_APP_CLIENT_ID,
         // scope: "read", // Descomente e ajuste se precisar validar escopos específicos
     });
