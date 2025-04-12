@@ -10,6 +10,7 @@ resource "aws_lambda_function" "auth_lambda" {
     variables = {
       COGNITO_USERPOOL_ID = aws_cognito_user_pool.main.id
       COGNITO_REGION      = var.regionDefault
+      COGNITO_APP_CLIENT_ID = aws_cognito_user_pool_client.app_client.id 
       CALLBACK_URL        = var.cognito_callback_url
     }
   }
