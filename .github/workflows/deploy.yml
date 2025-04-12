@@ -3,7 +3,7 @@ name: Deploy EKS Cluster with Terraform
 on:
   push:
     branches:
-      - deploy-cognito
+      - main
 
 jobs:
   deploy-base:
@@ -141,6 +141,6 @@ jobs:
         kubectl create configmap "$CONFIGMAP_NAME" \
           --from-literal=videos-process-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_PROCESS_NAME }}" \
           --from-literal=videos-process-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_PROCESS_NAME }}-dlq" \
-          --from-literal=videos-status-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}" \
-          --from-literal=videos-status-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}-dlq" 
+          --from-literal=videos-status-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}.fifo" \
+          --from-literal=videos-status-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}-dlq.fifo" 
     
