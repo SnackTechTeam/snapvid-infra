@@ -38,6 +38,10 @@ variable "sqsVideoProcessQueueName" {
   default = "sqs-video-novo"
 }
 
+variable "sqsVideoNotificationQueueName" {
+  default = "sqs-video-notification"
+}
+
 variable "rdsVideosDbName" {
   default = "dbvideos"
 }
