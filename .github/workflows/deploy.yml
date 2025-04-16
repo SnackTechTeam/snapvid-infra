@@ -57,7 +57,8 @@ jobs:
           -var="rdsDbVideosPassword=${{secrets.VIDEOS_DB_PASSWORD}}" \
           -var="ecrApiVideosName=${{vars.VIDEOS_API_ECR_NAME}}" \
           -var="ecrWorkerVideosStatusName=${{vars.VIDEOS_WORKER_STATUS_ECR_NAME}}" \
-          -var="ecrWorkerVideosProcessName=${{vars.VIDEOS_WORKER_PROCESS_ECR_NAME}}" 
+          -var="ecrWorkerVideosProcessName=${{vars.VIDEOS_WORKER_PROCESS_ECR_NAME}}" \
+          -var="sqsVideoNotificationQueueName=${{vars.VIDEOS_NOTIFICATION_SQS_NAME}}" \
 
     # 7. Aplicar o plano do Terraform
     - name: Terraform Apply
@@ -142,5 +143,7 @@ jobs:
           --from-literal=videos-process-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_PROCESS_NAME }}" \
           --from-literal=videos-process-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_PROCESS_NAME }}-dlq" \
           --from-literal=videos-status-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}.fifo" \
-          --from-literal=videos-status-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}-dlq.fifo" 
+          --from-literal=videos-status-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}-dlq.fifo" \
+          --from-literal=videos-notification-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.VIDEOS_NOTIFICATION_SQS_NAME }}" \
+          --from-literal=videos-notification-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.VIDEOS_NOTIFICATION_SQS_NAME }}-dlq" 
     

@@ -7,7 +7,7 @@ variable "projectName" {
 }
 
 variable "vpcCidr" {
-  default = "172.31.0.0/16"
+  default = "10.0.0.0/16"
 }
 
 variable "instanceType" {
@@ -36,6 +36,10 @@ variable "sqsVideoStatusQueueName" {
 
 variable "sqsVideoProcessQueueName" {
   default = "sqs-video-novo"
+}
+
+variable "sqsVideoNotificationQueueName" {
+  default = "sqs-video-notification"
 }
 
 variable "rdsVideosDbName" {
