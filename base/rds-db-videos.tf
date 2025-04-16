@@ -1,4 +1,4 @@
-resource "aws_db_instance" "snacktech_db_pedidos" {
+resource "aws_db_instance" "snacktech_db_videos" {
   allocated_storage         = 20
   storage_type              = "gp2"
   engine                    = "sqlserver-ex"

@@ -132,6 +132,7 @@ jobs:
         ID_VOCLABS: ${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}
         SQS_PROCESS_NAME: ${{ vars.VIDEOS_PROCESS_SQS_NAME }}
         SQS_STATUS_NAME: ${{ vars.VIDEOS_STATUS_SQS_NAME }}
+        VIDEOS_NOTIFICATION_NAME: ${{ vars.VIDEOS_NOTIFICATION_SQS_NAME }}
       run: |
         CONFIGMAP_NAME="sqs-queues-configmap"
     
@@ -144,6 +145,6 @@ jobs:
           --from-literal=videos-process-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_PROCESS_NAME }}-dlq" \
           --from-literal=videos-status-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}.fifo" \
           --from-literal=videos-status-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.SQS_STATUS_NAME }}-dlq.fifo" \
-          --from-literal=videos-notification-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.VIDEOS_NOTIFICATION_SQS_NAME }}" \
-          --from-literal=videos-notification-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.VIDEOS_NOTIFICATION_SQS_NAME }}-dlq" 
+          --from-literal=videos-notification-queue="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.VIDEOS_NOTIFICATION_NAME }}" \
+          --from-literal=videos-notification-queue-dlq="https://sqs.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ID_VOCLABS }}/${{ env.VIDEOS_NOTIFICATION_NAME }}-dlq" 
     
