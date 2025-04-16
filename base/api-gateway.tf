@@ -83,7 +83,7 @@ resource "aws_api_gateway_integration" "proxy" {
   connection_id   = aws_api_gateway_vpc_link.main.id
 }
 
-resource "aws_api_gateway_stage" "dev_stage" {
+resource "aws_api_gateway_stage" "prd_stage" {
   depends_on = [ aws_api_gateway_rest_api.main, aws_api_gateway_deployment.api_deployment ]
   rest_api_id   = aws_api_gateway_rest_api.main.id
   stage_name    = "prod"
