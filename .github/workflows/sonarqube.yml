@@ -11,13 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Install SonarScanner
-        uses: sonarsource/sonarqube-scan-action@master
-        with:
-          args: >
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-            -Dsonar.projectKey=SnackTechTeam_snapvid-infra
-            -Dsonar.organization=snacktechteam
-            -Dsonar.host.url="https://sonarcloud.io"
-            -Dsonar.branch.name=${{ github.ref_name }}
-            -Dsonar.projectName=SnackTechTeam_snapvid-infra
+      - name: Runs SonarQube Scanner
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
