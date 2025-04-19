@@ -86,8 +86,35 @@ jobs:
     # 9. Implantar servidor de metricas para o cluster
     - name: Deploy Metrics Server
       run: kubectl apply -f ../k8s/metrics-server.yaml
+
+    # 10. Implantar o KEDA no cluster
+    - name: Set up Helm
+      uses: azure/setup-helm@v4 # Use v4
+      with:
+        version: v3.12.0 # Specify a Helm version or let it use latest stable
+
+    - name: Install/Upgrade KEDA using Helm
+      run: |
+        # Enable verbose command execution logging
+        set -x 
+
+        helm repo add kedacore https://kedacore.github.io/charts
+        helm repo update
+        # Use upgrade --install to handle both initial install and subsequent upgrades
+        # Ensure KEDA CRDs are installed first by the Helm chart
+        helm upgrade --install keda kedacore/keda --namespace keda --create-namespace --wait
+        
+        echo "KEDA pods appear ready. Pausing briefly..."
+        sleep 60 # Add a short delay 
+        
+        # Wait for the operator pod
+        kubectl wait --for=condition=ready pod -l app.kubernetes.io/component=operator -n keda --timeout=180s
+        
+        echo "KEDA installation and readiness check complete."
+        # Disable verbose logging if needed for subsequent commands in the same step
+        set +x 
     
-    # 10. Criar secret compartilhado com as credencias de acesso ao banco de videos
+    # 11. Criar secret compartilhado com as credencias de acesso ao banco de videos
     - name: Create/Update DB Connection Secret
       env:
         DB_PASSWORD: ${{ secrets.VIDEOS_DB_PASSWORD }}
@@ -105,7 +132,7 @@ jobs:
         kubectl create secret generic "$SECRET_NAME"  \
           --from-literal=connection-string="$CONNECTION_STRING"
     
-    # 11. Criar secret compartilhado com os dados de acesso as credenciais da AWS 
+    # 12. Criar secret compartilhado com os dados de acesso as credenciais da AWS 
     - name: Create/Update AWS Secret
       env:
         ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -125,7 +152,7 @@ jobs:
           --from-literal=session-token="${{ env.TOKEN }}" \
           --from-literal=region="${{ env.REGION }}" 
     
-    # 12. Criar configmap compartilhado com os dados de acesso as filas sqs
+    # 13. Criar configmap compartilhado com os dados de acesso as filas sqs
     - name: Create/Update ConfigMap SQS
       env:
         AWS_REGION: ${{ vars.AWS_REGION }}
